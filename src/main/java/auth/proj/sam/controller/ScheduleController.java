@@ -2,6 +2,9 @@ package auth.proj.sam.controller;
 
 import auth.proj.sam.config.CustomUserDetails;
 import auth.proj.sam.model.User;
+import auth.proj.sam.model.Subject;
+import auth.proj.sam.repository.SubjectRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,25 +13,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class ScheduleController {
 
-    /**
-     * IMPORTANT: This is DUMMY DATA. In a real system, this data should be fetched
-     * from a service that queries the academic database based on the student's ID,
-     * current school year, and term.
-     */
-    private List<Map<String, String>> getSampleSubjects() {
-        return Arrays.asList(
-            Map.of("code", "IT101", "description", "Introduction to IT", "lec", "3", "lab", "0", "units", "3", "grade", "1.75", "schedule", "MWF 8:30 AM - 9:30 AM R 10:30 AM - 12:30 PM"),
-            Map.of("code", "CS202", "description", "Data Structures", "lec", "2", "lab", "1", "units", "3", "grade", "2.00", "schedule", "MW 1:30 PM - 3:00 PM"),
-            Map.of("code", "MATE1", "description", "College Algebra", "lec", "3", "lab", "0", "units", "3", "grade", "3.00", "schedule", "TTh 9:30 AM - 11:00 AM"),
-            Map.of("code", "FIL12", "description", "Filipino Subject", "lec", "3", "lab", "0", "units", "3", "grade", "INC", "schedule", "F 3:30 PM - 5:30 PM"),
-            Map.of("code", "PE301", "description", "Physical Fitness", "lec", "2", "lab", "0", "units", "2", "grade", "PASSED", "schedule", "Sat 7:30 AM - 9:30 AM")
-        );
-    }
-    
+    @Autowired
+    private SubjectRepository subjectRepository;
+
     // Time slots for the schedule grid
     private List<String> getTimeSlots() {
         return Arrays.asList(
@@ -39,6 +31,19 @@ public class ScheduleController {
         );
     }
 
+    // Convert Subject entities to Map format for template compatibility
+    private List<Map<String, String>> convertSubjectsToMap(List<Subject> subjects) {
+        return subjects.stream().map(subject -> Map.of(
+            "code", subject.getCode(),
+            "description", subject.getDescription(),
+            "lec", String.valueOf(subject.getLec()),
+            "lab", String.valueOf(subject.getLab()),
+            "units", String.valueOf(subject.getUnits()),
+            "grade", subject.getGrade(),
+            "schedule", subject.getSchedule()
+        )).collect(Collectors.toList());
+    }
+
     /**
      * Shows the dedicated schedule grid page.
      */
@@ -46,7 +51,7 @@ public class ScheduleController {
     public String showSchedulePage(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         User currentUser = userDetails.getUser();
         model.addAttribute("user", currentUser);
-        model.addAttribute("subjects", getSampleSubjects()); // Dummy Subjects
+        model.addAttribute("subjects", convertSubjectsToMap(subjectRepository.findAll())); // Fetch from DB
         model.addAttribute("timeSlots", getTimeSlots());
         // Use user's current academic status for context.
         model.addAttribute("schoolYear", currentUser.getSchoolYear() != null ? currentUser.getSchoolYear() : "N/A");
@@ -62,7 +67,7 @@ public class ScheduleController {
      public String showGradesPage(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         User currentUser = userDetails.getUser();
         model.addAttribute("user", currentUser);
-        model.addAttribute("subjects", getSampleSubjects()); // Dummy Subjects
+        model.addAttribute("subjects", convertSubjectsToMap(subjectRepository.findAll())); // Fetch from DB
         // Use user's current academic status for context.
         model.addAttribute("schoolYear", currentUser.getSchoolYear() != null ? currentUser.getSchoolYear() : "N/A");
         model.addAttribute("term", currentUser.getTerm() != null ? currentUser.getTerm() : "N/A");

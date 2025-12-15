@@ -29,43 +29,30 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        initializeRolesAndUsers();
+        verifyDatabaseInitialization();
     }
 
-    private void initializeRolesAndUsers() {
-        // Create roles if they don't exist
-        Role teacherRole = findOrCreateRole("ROLE_TEACHER");
-        Role studentRole = findOrCreateRole("ROLE_STUDENT");
-        // NEW: Create Department Role
-        Role departmentRole = findOrCreateRole("ROLE_DEPARTMENT");
+    private void verifyDatabaseInitialization() {
+        // Verify roles exist in database
+        verifyRoleExists("ROLE_TEACHER");
+        verifyRoleExists("ROLE_STUDENT");
+        verifyRoleExists("ROLE_DEPARTMENT");
 
-        // --- START: DEPARTMENT AUTO-CREATION BLOCK ---
+        // Verify department user exists in database
         Optional<User> existingDepartment = userRepository.findByUsername(DEFAULT_DEPT_USERNAME);
-
         if (existingDepartment.isEmpty()) {
-            User departmentUser = new User();
-            departmentUser.setUsername(DEFAULT_DEPT_USERNAME);
-            departmentUser.setEmail(DEFAULT_DEPT_EMAIL);
-            departmentUser.setPassword(passwordEncoder.encode(DEFAULT_DEPT_PASSWORD));
-            departmentUser.setEnabled(true);
-            departmentUser.getRoles().add(departmentRole); 
-            departmentUser.setFirstName("Department");
-            departmentUser.setLastName("Admin");
-            userRepository.save(departmentUser);
-            System.out.println("✅ Created initial department user (Username: " + DEFAULT_DEPT_USERNAME + ").");
+            System.err.println("⚠️ Department user is missing from database. Please check data.sql file.");
         } else {
-             System.out.println("✅ Department user already exists (Username: " + DEFAULT_DEPT_USERNAME + ").");
+            System.out.println("✅ Department user verified in database (Username: " + DEFAULT_DEPT_USERNAME + ").");
         }
-        // --- END: DEPARTMENT AUTO-CREATION BLOCK ---
     }
 
-    private Role findOrCreateRole(String roleName) {
+    private void verifyRoleExists(String roleName) {
         Optional<Role> roleOptional = roleRepository.findByName(roleName);
         if (roleOptional.isEmpty()) {
-            Role newRole = new Role();
-            newRole.setName(roleName);
-            return roleRepository.save(newRole);
+            System.err.println("⚠️ Role " + roleName + " is missing from database. Please check data.sql file.");
+        } else {
+            System.out.println("✅ Role " + roleName + " verified in database.");
         }
-        return roleOptional.get();
     }
 }
