@@ -1,18 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --dark-bg: #212121;
-    --dark-card-bg: #2C2C2C;
-    --dark-border: #424242;
-    --dark-text-primary: #FFFFFF;
-    --dark-text-secondary: #BDBDBD;
-    --primary-color: #536dfe;
-    --accent-color: #8BC34A; /* Green for links */
-    --button-bg: #8BC34A; /* Green for buttons */
-    --button-hover-bg: #7CB342;
+    --dark-bg: #1a1a1a;
+    --dark-card-bg: #252525;
+    --dark-border: #3a3a3a;
+    --dark-text-primary: #ffffff;
+    --dark-text-secondary: #a0a0a0;
+    --primary-color: #4a90e2;
+    --accent-color: #4a90e2;
+    --button-bg: #4a90e2;
+    --button-hover-bg: #357abd;
+    --success-color: #2ecc71;
+    --error-color: #e74c3c;
 }
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
 	background-image: url('/images/top-view-desk-dark-concept-with-copy-space.jpg');
@@ -22,9 +24,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Poppins', sans-serif;
     height: 100vh;
-    margin: 0;
 }
 body::before {
     content: '';
@@ -34,45 +35,47 @@ body::before {
     z-index: 0;
 }
 
-h1 { font-weight: 700; font-size: 2.2rem; margin: 0 0 8px 0; color: var(--dark-text-primary); }
-p { font-size: 14px; line-height: 20px; letter-spacing: 0.5px; margin: 20px 0 30px; color: var(--dark-text-secondary); }
-.tagline { font-size: 14px; margin-bottom: 25px; color: var(--dark-text-secondary); }
-a { color: var(--accent-color); font-size: 14px; text-decoration: none; margin: 15px 0; font-weight: 500; }
-a:hover { text-decoration: underline; }
+h1 { font-weight: 600; font-size: 2rem; margin-bottom: 10px; color: var(--dark-text-primary); }
+p { font-size: 14px; line-height: 22px; margin: 15px 0 25px; color: var(--dark-text-secondary); }
+a { color: var(--accent-color); font-size: 14px; text-decoration: none; font-weight: 500; transition: 0.2s; }
+a:hover { opacity: 0.8; }
 
 button {
     border-radius: 20px;
-    border: 1px solid var(--button-bg);
+    border: 1px sol8px;
+    border: none;
     background-color: var(--button-bg);
-    color: #FFFFFF;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 12px 45px;
-    letter-spacing: 1px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 11px 30px;
     text-transform: uppercase;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.3s ease;
     cursor: pointer;
     margin-top: 15px;
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
 }
-button:hover { background-color: var(--button-hover-bg); border-color: var(--button-hover-bg); transform: scale(1.05); }
-button:active { transform: scale(0.95); }
-button:focus { outline: none; }
-button.ghost { background-color: transparent; border-color: #FFFFFF; }
-button.ghost:hover { background-color: #FFFFFF; color: var(--dark-bg); }
-
+button:hover { 
+    background-color: var(--button-hover-bg);
+    box-shadow: 0 6px 16px rgba(74, 144, 226, 0.4);
+    transform: translateY(-2px);
+}
+button:active { transform: translateY(0
 form { display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 0 40px; height: 100%; text-align: center; }
 
-input, select {
-    background-color: #3c3c3c;
+input, select {33333;
     border: 1px solid var(--dark-border);
-    padding: 12px 15px;
+    padding: 11px 14px;
     margin: 8px 0;
     width: 100%;
-    border-radius: 8px;
+    border-radius: 6px;
     color: var(--dark-text-primary);
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.3s;
 }
-input::placeholder { color: var(--dark-text-secondary); opacity: 0.7; }
+input::placeholder { color: var(--dark-text-secondary); opacity: 0.6; }
+input:focus, select:focus { outline: none; border-color: var(--primary-color); background-color: #353535
 input:focus, select:focus { outline: none; border-color: var(--primary-color); }
 select {
     appearance: none; -webkit-appearance: none;
@@ -86,8 +89,8 @@ select {
 .input-group i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--dark-text-secondary); }
 .input-group input { padding-left: 45px; }
 .input-group input:focus ~ i { color: var(--primary-color); }
-
-.container {
+2px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3
     background-color: var(--dark-card-bg);
     border-radius: 10px;
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
