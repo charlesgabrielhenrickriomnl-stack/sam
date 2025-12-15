@@ -14,7 +14,7 @@ VALUES
 
 -- Insert default department user with encoded password for 'departmentpass'
 INSERT INTO users (username, email, password, enabled, first_name, last_name) VALUES 
-('department', 'department@sam.edu', '$2a$10$YourHashedPasswordHere', true, 'Department', 'Admin');
+('department', 'department@sam.edu', '$2a$10$33eb91c74fb2ebee1ce1aac43f2c2473', true, 'Department', 'Admin');
 
 -- Assign department user to ROLE_DEPARTMENT
 INSERT INTO user_roles (user_id, role_id)
