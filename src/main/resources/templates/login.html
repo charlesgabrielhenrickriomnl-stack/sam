@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome | SAM</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form th:action="@{/register/student}" th:object="${studentDto}" method="post">
+                <h1>Create Student Account</h1>
+                <span class="tagline">Enter your personal information (Step 1 of 4). Your login credentials will be emailed to you after verification.</span>
+
+                <div class="form-grid">
+                    <div th:if="${registrationError}" class="error-inline full-width" th:text="${registrationError}"></div>
+                    <div th:if="${param.error}" class="error-inline full-width" th:text="${param.error}"></div>
+
+                    <input type="text" th:field="*{lastName}" placeholder="Last Name" required/>
+                    <input type="text" th:field="*{firstName}" placeholder="First Name" required/>
+                    <input type="text" th:field="*{middleName}" placeholder="Middle Name (Optional)"/>
+
+                    <input class="full-width" type="email" th:field="*{email}" placeholder="Email Address" required/>
+                    
+                    </div>
+
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+
+        <div class="form-container sign-in-container">
+            <form th:action="@{/login}" method="post">
+                <h1>EAC MANILA</h1>
+                <span class="tagline">Use Your Student/Teacher ID to Login</span>
+                <div th:if="${message}" class="message" th:text="${message}"></div>
+                <div th:if="${param.error}" class="error-inline" th:text="${param.error}"></div>
+                <input type="text" name="username" placeholder="Student ID" required/>
+                <input type="password" name="password" placeholder="Password" required/>
+                <a th:href="@{/forgot-password}">Forgot your password?</a>
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back, Student!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Student!</h1>
+                    <p>Enter your personal details and start your college journey with us</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script th:inline="javascript">
+        // Expose the server-side error variable as a global flag for external scripts
+        window.hasRegistrationError = [[${registrationError}]] != null;
+    </script>
+    
+    <script th:src="@{/js/login.js}"></script>
+</body>
+</html>

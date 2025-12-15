@@ -1,0 +1,21 @@
+# Ignore directories created by the Maven/Spring build process
+target/
+
+# Ignore local IDE/OS files that aren't needed in the container
+.git
+.gitignore
+.mvn/
+.gradle/
+.idea/
+*.iml
+.DS_Store
+
+# Ignore the Dockerfile itself, and any temporary secrets you might have
+Dockerfile
+docker-compose.yml
+*.env
+
+# Ignore the local file upload directory.
+# This prevents copying large, user-generated files into the image.
+# On Render, this path is intended for a persistent disk mount.
+/src/main/resources/static/uploads/

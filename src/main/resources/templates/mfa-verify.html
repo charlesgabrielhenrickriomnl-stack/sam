@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify MFA</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="single-form-container">
+
+        <form th:action="@{/mfa-verify}" method="post">
+            <h1>Two-Factor Authentication</h1>
+            <span class="tagline">Please enter the code from your authenticator app.</span>
+
+            <div th:if="${error}" class="error-inline" th:text="${error}"></div>
+            <div th:if="${param.error}" class="error-inline" th:text="${param.error}"></div>
+
+            <input type="hidden" name="username" th:value="${username}" />
+
+            <input type="text" id="code" name="code" placeholder="Verification Code" required autofocus/>
+
+            <div style="display: flex; align-items: center; justify-content: center; width: 100%; margin: 10px 0;">
+                <input type="checkbox" id="trustDevice" name="trustDevice" style="width: auto; margin-right: 10px;"/>
+                <label for="trustDevice" style="margin: 0; color: var(--dark-text-secondary); font-size: 14px;">Trust this device for 30 days</label>
+            </div>
+
+            <button type="submit">Verify</button>
+        </form>
+
+    </div>
+</body>
+</html>

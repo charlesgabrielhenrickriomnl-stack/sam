@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Set Up MFA</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <div th:replace="~{fragments :: navbar}"></div>
+
+        <main class="content-area">
+            <div class="dashboard-card">
+                <h2>Set Up Multi-Factor Authentication</h2>
+                <p>Scan the QR code with your authenticator app (e.g., Google Authenticator) and enter the generated code to enable MFA.</p>
+
+                <div class="qr-code-container">
+                     <img th:src="${qrCode}" alt="MFA QR Code"/>
+                </div>
+
+                <div th:if="${error}" class="error" th:text="${error}"></div>
+                <div th:if="${message}" class="message" th:text="${message}"></div>
+
+                <form th:action="@{/mfa-enable}" method="post" class="mfa-form">
+                    <input type="text" id="code" name="code" required autofocus class="profile-input" placeholder="Verification Code"/>
+                    <button type="submit" class="btn btn-primary">Enable MFA</button>
+                </form>
+            </div>
+        </main>
+
+        <div class="social-footer">
+            <span class="follow-text">Follow Us On:</span>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

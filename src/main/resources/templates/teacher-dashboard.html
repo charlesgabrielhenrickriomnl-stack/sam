@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Dashboard</title>
+   <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+
+        <div th:replace="~{fragments :: teacher-navbar}"></div> <div class="hero-section">
+            <div class="hero-content">
+                <p class="pre-heading">Welcome, Faculty</p>
+                <h1 class="main-heading">
+                    <span th:text="${user.firstName} + ' ' + ${user.lastName}">User</span>!
+                </h1>
+                
+                <p class="sub-heading">
+                    Teacher ID: <strong th:text="${user.username}">TCH-ID</strong>. Here is an overview of your handled subjects and students.
+                </p>
+                
+                <div class="dashboard-card" style="width: 100%; max-width: 600px; padding: 20px;">
+                    <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 15px; color: var(--primary-color); border-bottom: 1px solid var(--dark-border); padding-bottom: 10px; text-align: left;">
+                        Subject Assignments
+                    </h2>
+                    <div class="info-group" th:each="subject : ${subjects}" style="padding: 10px 0; border-bottom: 1px solid var(--dark-border);">
+                        <label style="font-size: 15px; color: var(--dark-text-secondary);" th:text="${subject.code} + ' - ' + ${subject.description}"></label>
+                        <div class="info-value" style="font-size: 15px;">
+                            <i class="fas fa-clock" style="margin-right: 5px;"></i> <span th:text="${subject.schedule}"></span>
+                             | <i class="fas fa-users" style="margin-left: 10px; margin-right: 5px;"></i> <span th:text="${subject.count} + ' Students'"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card" style="width: 100%; max-width: 600px; padding: 20px; margin-top: 30px;">
+                    <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 15px; color: var(--error-color); border-bottom: 1px solid var(--dark-border); padding-bottom: 10px; text-align: left;">
+                        Students in <span th:text="${subjectTitle}">IT101</span> (Dummy)
+                    </h2>
+                    <div class="table-responsive">
+                        <table class="user-table" style="min-width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Last Grade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="student : ${subjectStudents}">
+                                    <td th:text="${student['id']}">ID</td>
+                                    <td th:text="${student['name']}">Name</td>
+                                    <td>
+                                         <span th:text="${student['grade']}"
+                                              th:classappend="${student['grade'] == 'INC' ? 'grade-inc' : (T(java.lang.Double).parseDouble(student['grade']) <= 3.00 ? 'grade-passed' : 'grade-fail')}">1.75</span>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(subjectStudents)}">
+                                    <td colspan="3" style="text-align: center; color: var(--dark-text-secondary);">No students enrolled in this dummy class.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="card-stack">
+                <div class="info-card info-card-1">
+                    <div class="card-text">
+                        <h4>MFA Security</h4>
+                        <p>
+                            Status:
+                            <span th:if="${user.mfaEnabled}" class="status active">Enabled</span>
+                            <span th:unless="${user.mfaEnabled}" class="status disabled">Disabled</span>
+                        </p>
+                        <a th:href="@{/settings#security}" class="card-link">Manage MFA <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="info-card info-card-2">
+                    <div class="card-text">
+                        <h4>Account Status</h4>
+                        <p>
+                            Status:
+                            <span th:if="${user.accountStatus.name() == 'ACTIVE'}" class="status active">Active</span>
+                            <span th:if="${user.accountStatus.name() == 'BLOCKED'}" class="status disabled">Blocked</span>
+                            <span th:if="${user.accountStatus.name() == 'TIMED_OUT'}" class="status timed-out">Timed Out</span>
+                        </p>
+                        <a th:href="@{/settings#account}" class="card-link">View Settings <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="info-card info-card-3">
+                    <div class="card-text">
+                        <h4>Last Login</h4>
+                        <p>Last login check:
+                            <span th:if="${user.lastDisplayNameChange != null}"
+                                  th:text="${#temporals.format(user.lastDisplayNameChange, 'dd MMM yyyy HH:mm')}">
+                            </span>
+                            <span th:if="${user.lastDisplayNameChange == null}">
+                                No recent activity
+                            </span>
+                        </p>
+                        <a href="#" class="card-link">View Logs <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="social-footer">
+            <span class="follow-text">Follow Us On:</span>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

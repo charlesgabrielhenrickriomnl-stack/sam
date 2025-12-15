@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Enter OTP</title>
+</head>
+<body>
+    <h2>Enter OTP</h2>
+    <p>We've sent an OTP to your email address.</p>
+    <form th:action="@{/login-otp}" method="post">
+        <input type="hidden" name="username" th:value="${param.username}" />
+        <div>
+            <label for="otp">OTP:</label>
+            <input type="text" id="otp" name="otp" required autofocus/>
+        </div>
+        <div>
+            <button type="submit">Verify</button>
+        </div>
+    </form>
+</body>
+</html>

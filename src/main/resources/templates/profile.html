@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head><body>
+    <div class="main-container">
+        <div th:replace="~{fragments :: navbar}"></div>
+
+        <main class="content-area">
+            <div class="dashboard-card rectangular-profile">
+                <h2>Edit Profile</h2>
+                <p class="profile-email-display">Email: <strong th:text="${user.email}">user@example.com</strong></p>
+
+
+                <div th:if="${message}" class="message" th:text="${message}"></div>
+                <div th:if="${error}" class="error" th:text="${error}"></div>
+
+                <div class="profile-stack"> <div class="settings-section">
+                        <h4>Profile Picture</h4>
+                        <div class="profile-avatar-container">
+                            <img th:src="${user.profileImagePath != null ? user.profileImagePath : '/images/default-avatar.png'}" alt="Profile Picture" class="profile-avatar" id="avatarPreview">
+                        </div>
+                        <form th:action="@{/profile/upload-image}" method="post" enctype="multipart/form-data" class="profile-form">
+                            <label for="file" class="btn btn-secondary"><i class="fas fa-image"></i> Choose Image</label>
+                            <input type="file" id="file" name="file" accept="image/*" style="display: none;" onchange="previewImage(event)">
+<button type="submit" class="btn btn-primary" id="uploadBtn">Upload</button>                                                </form>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>Display Name</h4>
+                        <p>Your current display name is: <strong th:text="${user.displayName != null ? user.displayName : user.username}"></strong></p>
+                        
+                        <form th:action="@{/profile/change-name}" method="post" class="profile-form">
+                            <div class="input-with-icon">
+                                <i class="fas fa-user"></i>
+    <input type="text" name="displayName" placeholder="Enter new display name" required class="profile-input">
+                            </div>
+                            <button type="submit" class="btn btn-primary" th:disabled="${!canChangeName}"><i class="fas fa-save"></i> Change Name</button>
+                        </form>
+
+                        <div class="cooldown-message" th:unless="${canChangeName}">
+                            <p><i class="fas fa-hourglass-half"></i> You can change your name again in <strong th:text="${daysLeft}">X</strong> days.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="social-footer">
+            <span class="follow-text">Follow Us On:</span>
+            <div class="social-icons">
+               <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

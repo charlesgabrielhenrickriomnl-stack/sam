@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Step 3 | Family Information</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="single-form-container" style="min-height: 500px; width: 450px;">
+        <form th:action="@{/onboarding/step3}" th:object="${dto}" method="post">
+            <h1>Family Information</h1>
+            <span class="tagline">Step 3 of 4</span>
+
+            <div th:if="${error}" class="error-inline full-width" th:text="${error}"></div>
+            <div th:if="${message}" class="message full-width" th:text="${message}"></div>
+
+            <div class="form-grid">
+                <input class="full-width" type="text" th:field="*{fatherName}" placeholder="Father's Full Name" required/>
+                <input class="full-width" type="text" th:field="*{motherName}" placeholder="Mother's Full Name" required/>
+                <input class="full-width" type="text" th:field="*{parentContactNumber}" placeholder="Parent/Guardian Contact No." required/>
+            </div>
+            
+            <button type="submit">Save & Continue (Step 4)</button>
+        </form>
+    </div>
+</body>
+</html>

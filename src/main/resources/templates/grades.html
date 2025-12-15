@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Academic Grades</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <div th:replace="~{fragments :: navbar}"></div>
+
+        <main class="content-area" style="max-width: 95%;">
+            <h1 class="page-title">Academic Grades</h1>
+
+            <div class="academic-table-container" style="width: 100%;">
+                
+                <div class="academic-header">
+                    <span>School Year: [[${schoolYear}]]</span>
+                    <span>Term: [[${term}]]</span>
+                </div>
+
+                <div style="padding: 20px;">
+                    <h2 style="font-size: 20px; margin-bottom: 15px; color: var(--primary-color);">Subject List & Final Grades</h2>
+                    <div class="table-responsive">
+                        <table class="subject-list-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Subject Code</th>
+                                    <th>Description</th>
+                                    <th>Lec</th>
+                                    <th>Lab</th>
+                                    <th>Units</th>
+                                    <th>Grade</th>
+                                    <th>Schedule</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="subject, stat : ${subjects}">
+                                    <td th:text="${stat.count}">1</td>
+                                    <td th:text="${subject.code}">IT101</td>
+                                    <td th:text="${subject.description}">Description</td>
+                                    <td th:text="${subject.lec}">3</td>
+                                    <td th:text="${subject.lab}">0</td>
+                                    <td th:text="${subject.units}">3</td>
+                                    <td>
+                                        <span th:text="${subject.grade}"
+                                              th:classappend="${subject.grade == 'PASSED' ? 'grade-passed' : subject.grade == 'INC' ? 'grade-inc' : (T(java.lang.Double).parseDouble(subject.grade) <= 3.00 ? 'grade-passed' : 'grade-fail')}">1.75</span>
+                                    </td>
+                                    <td th:text="${subject.schedule}">TTh 09:30 AM - 11:00 AM</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <div class="social-footer">
+            <span class="follow-text">Follow Us On:</span>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

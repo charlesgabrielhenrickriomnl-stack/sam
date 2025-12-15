@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <div th:replace="~{fragments :: __${#authorization.expression('hasRole(''ROLE_DEPARTMENT'')') ? 'department-navbar' : #authorization.expression('hasRole(''ROLE_TEACHER'')') ? 'teacher-navbar' : 'navbar'}__}"></div>
+
+        <main class="content-area settings-page">
+            <div class="settings-layout">
+                <aside class="settings-sidebar">
+                    <h2 class="settings-title">SETTINGS</h2>
+                    <nav class="settings-nav">
+                        <a href="#account" class="settings-nav-link"><i class="fas fa-user-circle"></i> Account</a>
+                        
+                        <div th:if="${#authorization.expression('hasAnyRole(''ROLE_STUDENT'', ''ROLE_TEACHER'')')}">
+                            <a href="#profile" class="settings-nav-link"><i class="fas fa-edit"></i> Profile</a>
+                            <a href="#security" class="settings-nav-link"><i class="fas fa-shield-alt"></i> Security</a>
+                        </div>
+                        
+                    </nav>
+                </aside>
+
+                <div class="settings-content">
+                    
+                    <div id="account" class="settings-panel">
+                        <h3>Account Information</h3>
+                        <p>Basic account details. To edit your display name, visit the Profile tab (if applicable).</p>
+                        
+                        <div th:if="${message}" class="message small-message" th:text="${message}"></div>
+                        <div th:if="${error}" class="error small-message" th:text="${error}"></div>
+                        
+                        <h4 style="margin-top: 15px;">Login Details</h4>
+                        <div class="info-group">
+                            <label>Username</label>
+                            <div th:text="${user.username}" class="info-value"></div>
+                        </div>
+                        <div class="info-group">
+                            <label>Email Address</label>
+                            <div th:text="${user.email}" class="info-value"></div>
+                        </div>
+                         <div class="info-group">
+                            <label>Display Name</label>
+                            <div th:text="${user.displayName != null ? user.displayName : user.firstName + ' ' + user.lastName}" class="info-value"></div>
+                        </div>
+                        <div class="info-group">
+                            <label>Account Status</label>
+                            <div>
+                                <span class="status"
+                                      th:classappend="${user.accountStatus.name().toLowerCase()}"
+                                      th:text="${user.accountStatus.name()}">
+                                </span>
+                            </div>
+                        </div>
+                        
+                    </div> 
+                    
+                    <div th:if="${#authorization.expression('hasAnyRole(''ROLE_STUDENT'', ''ROLE_TEACHER'')')}">
+                        <div id="profile" class="settings-panel">
+                            <h3>Edit Profile</h3>
+                            <div th:if="${message}" class="message small-message" th:text="${message}"></div>
+                            <div th:if="${error}" class="error small-message" th:text="${error}"></div>
+                            <div class="profile-stack"> 
+                                <div class="settings-section">
+                                    <h4>Profile Picture</h4>
+                                    <img th:src="${user.profileImagePath != null ? user.profileImagePath : '/images/default-avatar.png'}" alt="Profile Picture" class="profile-avatar" id="avatarPreview">
+                                    <form th:action="@{/profile/upload-image}" method="post" enctype="multipart/form-data" class="profile-form">
+                                        <label for="file" class="btn btn-secondary"><i class="fas fa-image"></i> Choose Image</label>
+                                        <input type="file" id="file" name="file" accept="image/*" style="display: none;" onchange="previewImage(event)">
+                                        <button type="submit" class="btn btn-primary" id="uploadBtn">Upload</button>
+                                    </form>
+                                </div>
+                                <div class="settings-section">
+                                    <h4>Display Name</h4>
+                                    <p>Current: <strong th:text="${user.displayName != null ? user.displayName : user.firstName + ' ' + user.lastName}"></strong></p>
+                                    
+                                    <form th:action="@{/profile/change-name}" method="post" class="profile-form">
+                                        <div class="input-with-icon">
+                                            <i class="fas fa-user"></i>
+                                            <input type="text" name="displayName" placeholder="Enter new display name" required class="profile-input">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary" th:disabled="${!canChangeName}"><i class="fas fa-save"></i> Change</button>
+                                    </form>
+                                    <div class="cooldown-message" th:unless="${canChangeName}">
+                                        <p><i class="fas fa-hourglass-half"></i> You can change your name again in <strong th:text="${daysLeft}">X</strong> days.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div th:if="${#authorization.expression('hasAnyRole(''ROLE_STUDENT'', ''ROLE_TEACHER'')')}">
+                        <div id="security" class="settings-panel">
+                            <h3>Security & Access</h3>
+                            <div th:if="${message}" class="message small-message" th:text="${message}"></div>
+                            <div th:if="${error}" class="error small-message" th:text="${error}"></div>
+
+                            
+                            <div th:if="${#authorization.expression('hasRole(''ROLE_STUDENT'')')}" style="margin-bottom: 40px;"> 
+                                <h4 style="margin-top: 5px;">Multi-Factor Authentication (MFA)</h4>
+                                <div th:if="${user.mfaEnabled}">
+                                    <p style="margin-bottom: 15px;">MFA is currently <strong>ENABLED</strong> on your account.</p>
+                                    <form th:action="@{/mfa-disable}" method="post">
+                                        <button type="submit" class="btn btn-danger">Disable MFA</button>
+                                    </form>
+                                </div>
+                                <div th:unless="${user.mfaEnabled}">
+                                    <p style="margin-bottom: 15px;">To enable MFA, scan the QR code with your authenticator app and enter the code below.</p>
+                                    <div class="mfa-setup-container">
+                                        <div class="qr-code-container">
+                                            <img th:src="${qrCode}" alt="MFA QR Code"/>
+                                        </div>
+                                        <form th:action="@{/mfa-enable}" method="post" class="mfa-form" style="display: flex; align-items: center; justify-content: flex-start; gap: 10px; width: 350px;">
+                                            <input type="text" id="code" name="code" required autofocus class="profile-input" placeholder="Verification Code"/>
+                                            <button type="submit" class="btn btn-primary" style="flex-shrink: 0; margin: 0; padding: 10px 20px;">Enable MFA</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:if="${verifyToken != null}">
+                                <h4 style="margin-top: 5px; color: var(--accent-color);">Verify Password Change</h4>
+                                <p style="margin-top: -15px; margin-bottom: 15px; color: var(--accent-color);">
+                                    A code has been sent to your email. Enter it below to finalize your password change.
+                                </p>
+                                <form th:action="@{/settings/change-password/finalize}" th:object="${verifyPasswordChangeDto}" method="post" class="profile-form" style="flex-direction: column; align-items: stretch; gap: 10px; max-width: 350px; padding: 0;">
+                                    
+                                    <input type="hidden" name="token" th:value="${verifyToken}" />
+                                    
+                                    <input type="text" th:field="*{code}" placeholder="Verification Code from Email" required class="profile-input" style="width: 100%;"/>
+                                    <button type="submit" class="btn btn-primary" style="align-self: flex-start; margin-top: 15px;"><i class="fas fa-check-circle"></i> Verify Code</button>
+                                </form>
+                            </div>
+                            
+                            <div th:unless="${verifyToken != null}" style="margin-top: 20px;">
+                                <h4 style="margin-top: 5px;">Change Password</h4>
+                                <form th:action="@{/settings/change-password/initiate}" th:object="${changePasswordDto}" method="post" class="profile-form" style="flex-direction: column; align-items: stretch; gap: 10px; max-width: 350px; padding: 0;">
+                                    <input type="password" th:field="*{currentPassword}" placeholder="Current Password" required class="profile-input" style="width: 100%;"/>
+                                    <input type="password" th:field="*{newPassword}" placeholder="New Password" required class="profile-input" style="width: 100%;"/>
+                                    <input type="password" th:field="*{confirmPassword}" placeholder="Confirm New Password" required class="profile-input" style="width: 100%;"/>
+                                    <button type="submit" class="btn btn-primary" style="align-self: flex-start; margin-top: 15px;"><i class="fas fa-key"></i> Change Password</button>
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+    <nav class="top-navbar-new" th:fragment="navbar">
+        <a class="navbar-brand" th:href="@{/student/dashboard}">SAM</a>
+
+        <div class="nav-links-left">
+            <a th:href="@{/student/dashboard}" 
+               th:classappend="${requestURI == '/student/dashboard' ? 'active' : ''}">Home</a>
+            
+            <a th:href="@{/student/schedule}"
+               th:classappend="${requestURI == '/student/schedule' ? 'active' : ''}">Schedule</a>
+            
+            <a th:href="@{/student/grades}"
+               th:classappend="${requestURI == '/student/grades' ? 'active' : ''}">Grades</a> 
+            
+            <a th:href="@{/student/registration-details}"
+               th:classappend="${requestURI == '/student/registration-details' ? 'active' : ''}">Details</a>
+        </div>
+
+        <div class="profile-dropdown">
+            <button id="profileDropdownBtn" class="nav-profile-link">
+                <img th:src="${#authentication.principal.user.profileImagePath != null ? #authentication.principal.user.profileImagePath : '/images/default-avatar.png'}" alt="Profile" class="nav-profile-pic">
+                <span th:text="${#authentication.principal.user.displayName != null ? #authentication.principal.user.displayName : #authentication.principal.username}">User</span>
+                <i class="fas fa-caret-down"></i>
+            </button>
+            <div id="profileDropdownMenu" class="dropdown-menu">
+                <a th:href="@{/settings}"><i class="fas fa-cog"></i> Account Settings</a>
+                <div class="dropdown-divider"></div>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <nav class="top-navbar-new" th:fragment="teacher-navbar">
+        <a class="navbar-brand" th:href="@{/teacher/dashboard}">SAM - Faculty</a>
+
+        <div class="nav-links-left">
+            <a th:href="@{/teacher/dashboard}" 
+               th:classappend="${requestURI == '/teacher/dashboard' ? 'active' : ''}">Home</a>
+            <a th:href="@{/teacher/students}" 
+               th:classappend="${requestURI == '/teacher/students' ? 'active' : ''}">Manage Students</a>
+               
+            <a th:href="@{/settings}"
+               th:classappend="${requestURI == '/settings' or requestURI == '/profile' ? 'active' : ''}">Account</a>
+        </div>
+
+        <div class="profile-dropdown">
+            <button id="profileDropdownBtn" class="nav-profile-link">
+                <img th:src="${#authentication.principal.user.profileImagePath != null ? #authentication.principal.user.profileImagePath : '/images/default-avatar.png'}" alt="Profile" class="nav-profile-pic">
+                <span th:text="${#authentication.principal.user.displayName != null ? #authentication.principal.user.displayName : #authentication.principal.username}">User</span>
+                <i class="fas fa-caret-down"></i>
+            </button>
+            <div id="profileDropdownMenu" class="dropdown-menu">
+                <a th:href="@{/settings}"><i class="fas fa-cog"></i> Account Settings</a>
+                <div class="dropdown-divider"></div>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    
+    <nav class="top-navbar-new" th:fragment="department-navbar">
+        <a class="navbar-brand" th:href="@{/department/dashboard}">SAM - Department</a>
+
+        <div class="nav-links-left">
+            <a th:href="@{/department/dashboard}" 
+               th:classappend="${requestURI == '/department/dashboard' ? 'active' : ''}">Home</a>
+            <a th:href="@{/department/create-teacher}" 
+               th:classappend="${requestURI == '/department/create-teacher' ? 'active' : ''}">Create Teacher</a>
+            <a th:href="@{/department/teachers}" 
+               th:classappend="${requestURI == '/department/teachers' ? 'active' : ''}">Manage Teachers</a>
+        </div>
+
+        <div class="profile-dropdown">
+            <button id="profileDropdownBtn" class="nav-profile-link">
+                <img th:src="${#authentication.principal.user.profileImagePath != null ? #authentication.principal.user.profileImagePath : '/images/default-avatar.png'}" alt="Profile" class="nav-profile-pic">
+                <span th:text="${#authentication.principal.user.displayName != null ? #authentication.principal.user.displayName : #authentication.principal.username}">User</span>
+                <i class="fas fa-caret-down"></i>
+            </button>
+            <div id="profileDropdownMenu" class="dropdown-menu">
+                <a th:href="@{/settings}"><i class="fas fa-cog"></i> Account Settings</a>
+                <div class="dropdown-divider"></div>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    
+</body>
+</html>

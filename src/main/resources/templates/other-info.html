@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Step 4 | Other Information</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="single-form-container" style="min-height: 700px; width: 600px;">
+        <form th:action="@{/onboarding/step4}" th:object="${dto}" method="post">
+            <h1>Other Information</h1>
+            <span class="tagline">Step 4 of 4 - Final Step</span>
+
+            <div th:if="${error}" class="error-inline full-width" th:text="${error}"></div>
+            <div th:if="${message}" class="message full-width" th:text="${message}"></div>
+
+            <div class="form-grid">
+                <input type="text" th:field="*{birthDate}" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" placeholder="Birth Date (MM/dd/yyyy)" required/>
+                <input type="text" th:field="*{birthPlace}" placeholder="Birth Place" required/>
+                
+                <select th:field="*{gender}" required>
+                    <option value="" disabled selected>Gender</option>
+                    <option th:each="g : ${genders}" th:value="${g}" th:text="${g.name()}"></option>
+                </select>
+                
+                <select th:field="*{civilStatus}" required>
+                    <option value="" disabled selected>Civil Status</option>
+                    <option th:each="c : ${civilStatuses}" th:value="${c}" th:text="${c.name()}"></option>
+                </select>
+                
+                <select th:field="*{citizenship}" required>
+                    <option value="" disabled selected>Citizenship</option>
+                    <option th:each="c : ${citizenships}" th:value="${c}" th:text="${c.name()}"></option>
+                </select>
+                
+                <input type="text" th:field="*{religion}" placeholder="Religion" required/>
+
+                <div class="full-width" style="display: flex; align-items: center; justify-content: flex-start; gap: 10px; margin: 8px 0;">
+                    <input type="checkbox" id="dualCitizenship" th:field="*{dualCitizenship}" style="width: auto; margin: 0;"/>
+                    <label for="dualCitizenship" style="margin: 0; color: var(--dark-text-secondary); font-size: 14px; width: auto;">Dual Citizenship?</label>
+                </div>
+                
+                <input type="text" th:field="*{cellphoneNumber}" placeholder="Cellphone Number" required/>
+                <input type="text" th:field="*{residenceNumber}" placeholder="Residence Number (Optional)"/>
+                <input class="full-width" type="text" th:field="*{facebook}" placeholder="Facebook Profile URL (Optional)"/>
+                <input class="full-width" type="text" th:field="*{twitter}" placeholder="Twitter/X Handle (Optional)"/>
+            </div>
+            
+            <button type="submit">Complete Registration</button>
+        </form>
+    </div>
+</body>
+</html>

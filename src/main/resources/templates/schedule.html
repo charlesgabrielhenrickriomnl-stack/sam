@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Class Schedule</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <div th:replace="~{fragments :: navbar}"></div>
+
+        <main class="content-area">
+            <h1 class="page-title">Class Schedule</h1>
+
+            <div class="academic-table-container"> 
+                
+                <div class="academic-header">
+                    <span>School Year: [[${schoolYear}]]</span>
+                    <span>Term: [[${term}]]</span>
+                </div>
+
+                <div style="padding: 20px;">
+                    <h2 style="font-size: 20px; margin-top: 20px; margin-bottom: 15px; color: var(--primary-color);">Class Schedule Grid</h2>
+                    
+                    <div class="table-responsive"> 
+                        <table class="schedule-grid" style="min-width: 1200px;"> 
+                            <thead>
+                                <tr>
+                                    <th class="time-slot" style="text-align: center; background-color: #A93226; color: #fff;">Time</th>
+                                    <th>Monday</th>
+                                    <th>Tuesday</th>
+                                    <th>Wednesday</th>
+                                    <th>Thursday</th>
+                                    <th>Friday</th>
+                                    <th>Saturday</th>
+                                    <th>Sunday</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="time : ${timeSlots}">
+                                    <th class="time-slot" th:text="${time}">07:30 AM</th>
+                                    
+                                    <td th:if="${time == '07:30 AM'}" rowspan="2" class="slot-occupied-1">PE301<br/>7:30-9:30</td>
+                                    <td th:if="${time == '08:30 AM'}" style="display: none;"></td> 
+                                    <td th:if="${time == '18:30 PM'}" rowspan="2" class="slot-occupied-2">IT101<br/>6:30-8:30</td>
+                                    <td th:if="${time == '19:30 PM'}" style="display: none;"></td> 
+
+                                    <td th:if="${time == '18:30 PM'}" rowspan="2" class="slot-occupied-1">CS202<br/>6:30-8:30</td>
+                                    <td th:if="${time == '19:30 PM'}" style="display: none;"></td> 
+                                    
+                                    <td th:if="${time == '09:30 AM'}" rowspan="2" class="slot-occupied-2">MATE1<br/>9:30-11:30</td>
+                                    <td th:if="${time == '10:30 AM'}" style="display: none;"></td>
+                                    
+                                    <td th:if="${time == '13:30 PM'}" rowspan="2" class="slot-occupied-1">FIL12<br/>1:30-3:30</td>
+                                    <td th:if="${time == '14:30 PM'}" style="display: none;"></td>
+                                    
+                                    <td th:if="${time == '13:30 PM'}" rowspan="2" class="slot-occupied-2">PE301<br/>1:30-3:30</td>
+                                    <td th:if="${time == '14:30 PM'}" style="display: none;"></td>
+
+                                    <td th:if="${time == '07:30 AM'}" rowspan="2" class="slot-occupied-2">IT101<br/>7:30-9:30</td>
+                                    <td th:if="${time == '08:30 AM'}" style="display: none;"></td>
+
+                                    <td th:if="${time == '07:30 AM'}" rowspan="2" class="slot-occupied-1">CS202<br/>7:30-9:30</td>
+                                    <td th:if="${time == '08:30 AM'}" style="display: none;"></td>
+                                    
+                                    <td th:unless="${time == '07:30 AM' or time == '08:30 AM' or time == '09:30 AM' or time == '10:30 AM' or time == '11:30 AM' or time == '12:30 PM' or time == '13:30 PM' or time == '14:30 PM' or time == '18:30 PM' or time == '19:30 PM'}"></td>
+                                    <td th:unless="${time == '07:30 AM' or time == '08:30 AM' or time == '09:30 AM' or time == '10:30 AM' or time == '11:30 AM' or time == '12:30 PM' or time == '13:30 PM' or time == '14:30 PM' or time == '18:30 PM' or time == '19:30 PM'}"></td>
+                                    <td th:unless="${time == '07:30 AM' or time == '08:30 AM' or time == '09:30 AM' or time == '10:30 AM' or time == '11:30 AM' or time == '12:30 PM' or time == '13:30 PM' or time == '14:30 PM' or time == '18:30 PM' or time == '19:30 PM'}"></td>
+                                    <td th:unless="${time == '07:30 AM' or time == '08:30 AM' or time == '09:30 AM' or time == '10:30 AM' or time == '11:30 AM' or time == '12:30 PM' or time == '13:30 PM' or time == '14:30 PM' or time == '18:30 PM' or time == '19:30 PM'}"></td>
+                                    <td th:unless="${time == '07:30 AM' or time == '08:30 AM' or time == '09:30 AM' or time == '10:30 AM' or time == '11:30 AM' or time == '12:30 PM' or time == '13:30 PM' or time == '14:30 PM' or time == '18:30 PM' or time == '19:30 PM'}"></td>
+                                    <td th:unless="${time == '07:30 AM' or time == '08:30 AM' or time == '09:30 AM' or time == '10:30 AM' or time == '11:30 AM' or time == '12:30 PM' or time == '13:30 PM' or time == '14:30 PM' or time == '18:30 PM' or time == '19:30 PM'}"></td>
+                                    <td th:unless="${time == '07:30 AM' or time == '08:30 AM' or time == '09:30 AM' or time == '10:30 AM' or time == '11:30 AM' or time == '12:30 PM' or time == '13:30 PM' or time == '14:30 PM' or time == '18:30 PM' or time == '19:30 PM'}"></td>
+                                    <td th:unless="${time == '07:30 AM' or time == '08:30 AM' or time == '09:30 AM' or time == '10:30 AM' or time == '11:30 AM' or time == '12:30 PM' or time == '13:30 PM' or time == '14:30 PM' or time == '18:30 PM' or time == '19:30 PM'}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <div class="social-footer">
+            <span class="follow-text">Follow Us On:</span>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

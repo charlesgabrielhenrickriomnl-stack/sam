@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Details</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <div th:replace="~{fragments :: navbar}"></div>
+
+        <main class="content-area" style="max-width: 95%;">
+            <h1 class="page-title">Registration Details</h1>
+
+            <div class="dashboard-card" style="max-width: 900px; margin: 0 auto; padding: 20px 40px;">
+                
+                <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 20px; color: var(--primary-color); border-bottom: 1px solid var(--dark-border); padding-bottom: 10px;">
+                    Full Registration Profile
+                </h2>
+
+                <div th:if="${user.registrationStep < 5}">
+                    <p style="color: var(--error-color); font-weight: 600; font-size: 16px;">
+                        <i class="fas fa-exclamation-triangle"></i> REGISTRATION INCOMPLETE: Please complete your profile to view full details.
+                    </p>
+                    <a th:href="@{'/onboarding/step' + ${user.registrationStep}}" class="action-button" style="background-color: #ffab40; color: var(--dark-bg); font-size: 16px;">
+                        <i class="fas fa-sign-in-alt"></i> Continue Registration (Step <span th:text="${user.registrationStep}"></span> of 4)
+                    </a>
+                </div>
+                
+                <div th:unless="${user.registrationStep < 5}">
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px;">
+                        
+                        <h4 style="grid-column: 1 / 3; font-size: 20px; font-weight: 500; padding-bottom: 10px; border-bottom: 1px solid var(--dark-border); margin-top: 15px;">Personal & Contact Info</h4>
+                        <div class="info-group">
+                            <label>Full Name</label>
+                            <div th:text="${user.firstName} + ' ' + (${user.middleName} ?: '') + ' ' + ${user.lastName}" class="info-value"></div>
+                        </div>
+                        <div class="info-group">
+                            <label>Date & Place of Birth</label>
+                            <div th:text="${user.birthDate != null ? #temporals.format(user.birthDate, 'MMMM dd, yyyy') : 'N/A' } + ' / ' + (${user.birthPlace} ?: 'N/A')" class="info-value"></div>
+                        </div>
+                        <div class="info-group">
+                            <label>Gender / Civil Status</label>
+                            <div th:text="${user.gender} + ' / ' + ${user.civilStatus}" class="info-value"></div>
+                        </div>
+                        <div class="info-group">
+                            <label>Citizenship</label>
+                            <div th:text="${user.citizenship} + (${user.dualCitizenship ? ' (Dual)' : ''})" class="info-value"></div>
+                        </div>
+                        <div class="info-group">
+                            <label>Religion</label>
+                            <div th:text="${user.religion} ?: 'N/A'" class="info-value"></div>
+                        </div>
+                        <div class="info-group">
+                            <label>Contact No. (Personal)</label>
+                            <div th:text="${user.cellphoneNumber} ?: 'N/A'" class="info-value"></div>
+                        </div>
+                        
+                        <div style="grid-column: 1 / 3; display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: none;">
+                            <label style="font-size: 14px; color: var(--dark-text-secondary);">Residence No. / Social</label>
+                            <div style="font-size: 16px; font-weight: 600; color: var(--primary-color); text-align: right;">
+                                <span th:if="${user.residenceNumber}" th:text="'Res: ' + ${user.residenceNumber}"></span>
+                                <span th:if="${(not #strings.isEmpty(user.facebook)) and (not #strings.isEmpty(user.residenceNumber))}"> / </span>
+                                <span th:if="${user.facebook}"><i class="fab fa-facebook-f"></i> FB</span>
+                                <span th:if="${(not #strings.isEmpty(user.twitter)) and ((not #strings.isEmpty(user.residenceNumber)) or (not #strings.isEmpty(user.facebook)))}"> / </span>
+                                <span th:if="${user.twitter}"><i class="fab fa-twitter"></i> X</span>
+                                <span th:unless="${(not #strings.isEmpty(user.residenceNumber)) or (not #strings.isEmpty(user.facebook)) or (not #strings.isEmpty(user.twitter))}">N/A</span>
+                            </div>
+                        </div>
+                        
+                        <h4 style="grid-column: 1 / 3; font-size: 20px; font-weight: 500; padding-bottom: 10px; border-bottom: 1px solid var(--dark-border); margin-top: 30px;">Educational Details</h4>
+                        <div class="info-group">
+                            <label>Application For / Classification</label>
+                            <div th:text="${user.applicationFor} + ' / ' + ${user.classification}" class="info-value"></div>
+                        </div>
+                        <div class="info-group">
+                            <label>Course / Year</label>
+                            <div th:text="${user.courseProgram} + ' - ' + ${user.level}" class="info-value"></div>
+                        </div>
+                        <div class="info-group">
+                            <label>School Year / Term</label>
+                            <div th:text="${user.schoolYear} + ' / ' + ${user.term}" class="info-value"></div>
+                        </div>
+                        <div class="info-group">
+                            <label>LRN</label>
+                            <div th:text="${user.lrn} ?: 'N/A'" class="info-value"></div>
+                        </div>
+                        
+                        <h4 style="grid-column: 1 / 3; font-size: 20px; font-weight: 500; padding-bottom: 10px; border-bottom: 1px solid var(--dark-border); margin-top: 30px;">Family & Address</h4>
+                        <div class="info-group">
+                            <label>Father's Name</label>
+                            <div th:text="${user.fatherName} ?: 'N/A'" class="info-value"></div>
+                        </div>
+                        <div class="info-group">
+                            <label>Mother's Name</label>
+                            <div th:text="${user.motherName} ?: 'N/A'" class="info-value"></div>
+                        </div>
+                        <div class="info-group">
+                            <label>Parent Contact</label>
+                            <div th:text="${user.parentContactNumber} ?: 'N/A'" class="info-value"></div>
+                        </div>
+                        
+                        <div style="grid-column: 1 / 3; display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: none;">
+                            <label style="font-size: 14px; color: var(--dark-text-secondary);">Current Address</label>
+                            <div style="font-size: 16px; font-weight: 600; color: var(--primary-color); max-width: 70%; text-align: right;" th:text="(${user.unitNumber} ?: '') + ' ' + (${user.street} ?: '') + ', ' + (${user.barangay} ?: '') + ', ' + (${user.city} ?: '') + ' ' + (${user.zipCode} ?: '')"></div>
+                        </div>
+                        
+                    </div>
+                    </div>
+            </div>
+        </main>
+
+        <div class="social-footer">
+            <span class="follow-text">Follow Us On:</span>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

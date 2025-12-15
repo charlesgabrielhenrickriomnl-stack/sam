@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Department Settings</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <div th:replace="~{fragments :: department-navbar}"></div>
+
+        <main class="content-area settings-page">
+            <div class="settings-layout">
+                <aside class="settings-sidebar">
+                    <h2 class="settings-title">SETTINGS</h2>
+                    <nav class="settings-nav">
+                        <a href="#account" class="settings-nav-link active"><i class="fas fa-user-circle"></i> Account</a>
+                    </nav>
+                </aside>
+
+                <div class="settings-content">
+                    <div id="account" class="settings-panel active">
+                        <h3>Account Information</h3>
+                        <p>Basic login and account details for the Department Administrator.</p>
+                        
+                        <h4 style="margin-top: 15px;">Login Details</h4>
+                        <div class="info-group">
+                            <label>Username</label>
+                            <div th:text="${user.username}" class="info-value"></div>
+                        </div>
+                        <div class="info-group">
+                            <label>Email Address</label>
+                            <div th:text="${user.email}" class="info-value"></div>
+                        </div>
+                                <span class="status"
+                                      th:classappend="${user.accountStatus.name().toLowerCase()}"
+                                      th:text="${user.accountStatus.name()}">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

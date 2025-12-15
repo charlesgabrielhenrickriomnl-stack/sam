@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Students</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <div th:replace="~{fragments :: teacher-navbar}"></div>
+
+        <main class="content-area" style="max-width: 95%;">
+            <h1 class="page-title">Manage Students</h1>
+
+            <div class="dashboard-card" style="max-width: 100%; padding: 20px 40px;">
+                <h2 class="card-title-new" style="border-bottom: 1px solid var(--dark-border); padding-bottom: 15px; margin-bottom: 25px;">
+                    Students in [[${course}]] 
+                </h2>
+                
+                <p style="margin-top: -10px; font-size: 15px;">
+                    Total Students Enrolled: <strong th:text="${totalStudents}">5</strong>
+                </p>
+
+                <div class="table-responsive">
+                    <table class="user-table" style="min-width: 900px;">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Full Name</th>
+                                <th>Course/Section</th>
+                                <th>Action (Dummy)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="student : ${students}">
+                                <td th:text="${student.id}">22-1-00001</td>
+                                <td th:text="${student.name}">John Smith</td>
+                                <td th:text="${student.course}">BSIT 1-1</td>
+                                <td>
+                                    <button class="btn btn-warning" style="padding: 6px 12px; margin: 0; font-size: 12px;">Enter Grade</button>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(students)}">
+                                <td colspan="4" style="text-align: center; color: var(--dark-text-secondary);">No students are currently assigned to your dummy classes.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <div class="social-footer">
+            <span class="follow-text">Follow Us On:</span>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Assignments</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <div th:replace="~{fragments :: department-navbar}"></div>
+
+        <main class="content-area" style="max-width: 95%;">
+            <h1 class="page-title">Manage Subject Assignments</h1>
+
+            <div class="dashboard-card" style="max-width: 900px; padding: 30px;">
+                
+                <h2 class="assignment-header-details">
+                    Assignments for: 
+                    <span th:text="${teacher.firstName} + ' ' + ${teacher.lastName}">Teacher Name</span> 
+                    (<span th:text="${teacher.username}">ID</span>)
+                </h2>
+
+                <div class="settings-section">
+                    <h4 class="assignment-section-title">Assign New Subject/Course</h4>
+                    <p style="margin-bottom: 20px; color: var(--dark-text-secondary);">Select a subject below to assign it to this faculty member.</p>
+
+                    <form action="#" method="post" class="assignment-form-container">
+                        <select name="subjectCode" class="profile-input" style="flex-grow: 1;">
+                            <option value="" disabled selected>Select Subject to Assign</option>
+                            <option th:each="subject : ${availableSubjects}" th:value="${subject}" th:text="${subject}"></option>
+                        </select>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Assign</button>
+                    </form>
+                </div>
+                
+                <div class="assignment-divider"></div>
+
+                <div class="settings-section">
+                    <h4 class="assignment-section-title">Current Subject Assignments</h4>
+                    
+                    <div th:if="${#lists.isEmpty(assignedSubjects)}" style="margin-top: 15px;">
+                        <p style="color: var(--dark-text-secondary);">No subjects are currently assigned to this teacher.</p>
+                    </div>
+                    
+                    <ul class="assigned-subjects-list">
+                        <li th:each="subject : ${assignedSubjects}">
+                            <span class="info-value" th:text="${subject}">Subject Code - Description</span>
+                            <form action="#" method="post">
+                                <input type="hidden" name="teacherId" th:value="${teacher.username}">
+                                <input type="hidden" name="subjectCode" th:value="${subject}">
+                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Remove</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="form-link" style="margin-top: 30px;">
+                    <a th:href="@{/department/teachers}"><i class="fas fa-arrow-left"></i> Back to Teachers List</a>
+                </div>
+            </div>
+        </main>
+
+        <div class="social-footer">
+            <span class="follow-text">Follow Us On:</span>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

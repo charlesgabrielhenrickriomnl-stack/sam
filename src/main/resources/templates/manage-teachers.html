@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Faculty</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <div th:replace="~{fragments :: department-navbar}"></div>
+
+        <main class="content-area" style="max-width: 95%;">
+            <h1 class="page-title">Teachers List</h1>
+
+            <div class="dashboard-card" style="max-width: 100%; padding: 20px 40px;">
+                <h2 class="card-title-new" style="border-bottom: 1px solid var(--dark-border); padding-bottom: 15px; margin-bottom: 25px;">
+                    Currently Registered Faculty
+                </h2>
+                
+                <div class="table-responsive">
+                    <table class="user-table" style="min-width: 900px;">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Account Status</th>
+                                <th>Actions (Subjects/Students)</th> </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="teacher : ${teachers}">
+                                <td th:text="${teacher.username}">22-1-05000</td>
+                                <td th:text="${teacher.firstName + ' ' + teacher.lastName}">Dr. Jane Doe</td>
+                                <td th:text="${teacher.email}">email@example.com</td>
+                                <td>
+                                    <span class="status active" th:classappend="${teacher.accountStatus.name().toLowerCase()}" th:text="${teacher.accountStatus.name()}">ACTIVE</span>
+                                </td>
+                                <td>
+                                    <div class="actions">
+                                        <a href="#" class="btn btn-warning" 
+                                           th:href="@{'/department/manage-assignments?teacherId=' + ${teacher.username}}"
+                                           style="padding: 8px 12px; margin: 0; font-size: 14px;">
+                                            <i class="fas fa-book"></i> Manage Assignments
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(teachers)}">
+                                <td colspan="5" style="text-align: center; color: var(--dark-text-secondary);">No teacher accounts found in the system.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <div class="social-footer">
+            <span class="follow-text">Follow Us On:</span>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

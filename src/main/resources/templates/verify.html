@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify Your Account</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="single-form-container">
+        <form th:action="@{/verify}" method="post">
+            <h1>Account Verification</h1>
+            <span class="tagline">A verification code has been sent to your email. Please enter it below.</span>
+
+            <div th:if="${error}" class="error-inline" th:text="${error}"></div>
+
+            <input type="hidden" name="username" th:value="${username}" />
+            <input type="text" id="code" name="code" placeholder="Verification Code" required autofocus/>
+            
+            <button type="submit">Verify</button>
+
+            <div class="form-link">
+                <a th:href="@{/login}">Back to Sign In</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Teacher Account</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="single-form-container" style="min-height: 700px; width: 600px;">
+        <form th:action="@{/department/create-teacher}" th:object="${dto}" method="post">
+            <h1>Create Teacher Account</h1>
+            <span class="tagline">Enter the teacher's details. You can assign subjects later in the "Manage Teachers" view.</span> <div th:if="${error}" class="error-inline full-width" th:text="${error}"></div>
+            <div th:if="${message}" class="message full-width" th:text="${message}"></div>
+
+            <div class="form-grid">
+                
+                <h4 class="full-width" style="color: var(--dark-text-primary); margin: 0; padding-top: 10px; font-weight: 600;">Faculty Personal Info</h4>
+                <input type="text" th:field="*{lastName}" placeholder="Last Name" required/>
+                <input type="text" th:field="*{firstName}" placeholder="First Name" required/>
+                <input class="full-width" type="email" th:field="*{email}" placeholder="Email Address" required/>
+                
+                <h4 class="full-width" style="color: var(--dark-text-primary); margin: 0; padding-top: 20px; font-weight: 600;">Login Details (Teacher ID Format)</h4>
+                <input type="text" th:field="*{teacherId}" placeholder="Teacher ID (e.g., 22-1-05000, leave blank for auto)"/>
+                <input type="password" th:field="*{initialPassword}" placeholder="Initial Password (Last Name if empty)"/>
+
+                <h4 class="full-width" style="color: var(--dark-text-primary); margin: 0; padding-top: 20px; font-weight: 600;">Initial Assignment (Skipped)</h4>
+                <p class="full-width" style="margin: 5px 0 5px 0; color: var(--dark-text-secondary); font-size: 14px; text-align: left;">
+                    Initial subject/section assignment will be performed later via the **Manage Teachers** screen.
+                </p>
+                
+                </div>
+            
+            <button type="submit" style="margin-top: 15px;">Create Account</button>
+            
+            <div class="form-link">
+                <a th:href="@{/department/dashboard}">Back to Dashboard</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

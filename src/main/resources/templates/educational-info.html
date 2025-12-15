@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Step 2 | Educational Information</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="single-form-container" style="min-height: 700px; width: 600px;">
+        <form th:action="@{/onboarding/step2}" th:object="${dto}" method="post">
+            <h1>Educational & Address Info</h1>
+            <span class="tagline">Step 2 of 4</span>
+
+            <div th:if="${error}" class="error-inline full-width" th:text="${error}"></div>
+            <div th:if="${message}" class="message full-width" th:text="${message}"></div>
+
+            <div class="form-grid">
+                
+                <h4 class="full-width" style="color: var(--dark-text-primary); margin: 0; padding-top: 10px; font-weight: 600;">Educational Details</h4>
+                <input class="full-width" type="text" th:field="*{applicationFor}" placeholder="Application For" required/>
+                <input class="full-width" type="text" th:field="*{classification}" placeholder="Classification (e.g., New/Transferee)" required/>
+                <input class="full-width" type="text" th:field="*{lrn}" placeholder="LRN (Learner's Reference No.)" required/>
+                <input class="full-width" type="text" th:field="*{schoolYear}" placeholder="School Year (e.g., 2024-2025)" required/>
+                <input class="full-width" type="text" th:field="*{term}" placeholder="Term/Semester (e.g., 1st Semester)" required/>
+
+                <select th:field="*{courseProgram}" required>
+                    <option value="" disabled selected>Course/Program</option>
+                    <option value="BSIT">BS Information Technology</option>
+                    <option value="BSCS">BS Computer Science</option>
+                    <option value="BSCE">BS Civil Engineering</option>
+                </select>
+
+                <select th:field="*{level}" required>
+                    <option value="" disabled selected>Year Level</option>
+                    <option value="First Year">First Year</option>
+                    <option value="Second Year">Second Year</option>
+                    <option value="Third Year">Third Year</option>
+                    <option value="Fourth Year">Fourth Year</option>
+                </select>
+
+                <h4 class="full-width" style="color: var(--dark-text-primary); margin: 0; padding-top: 20px; font-weight: 600;">Address Details</h4>
+                <input type="text" th:field="*{unitNumber}" placeholder="Unit/House No. (Optional)"/>
+                <input type="text" th:field="*{street}" placeholder="Street Address" required/>
+                <input type="text" th:field="*{barangay}" placeholder="Barangay" required/>
+                <input type="text" th:field="*{city}" placeholder="City" required/>
+                <input class="full-width" type="text" th:field="*{zipCode}" placeholder="Zip Code" required/>
+                
+            </div>
+            
+            <button type="submit">Save & Continue (Step 3)</button>
+        </form>
+    </div>
+</body>
+</html>
