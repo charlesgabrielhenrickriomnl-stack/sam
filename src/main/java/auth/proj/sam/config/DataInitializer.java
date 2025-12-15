@@ -52,7 +52,7 @@ public class DataInitializer implements CommandLineRunner {
         if (roleOptional.isEmpty()) {
             System.err.println("⚠️ Role " + roleName + " is missing from database. Please check data.sql file.");
         } else {
-            System.out.println("✅ Role " + roleName + " verified in database.");
+            System.out.println("✅ Role " + roleName + " verified in Database.");
         }
     }
 }
